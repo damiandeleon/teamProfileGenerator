@@ -17,18 +17,16 @@ function addPersonelPrompt (){
         ])
 
         .then((data) => {
-            const choices = data.choices;
+            const choices = data.membertype;
             console.log(choices)
-            // if(data.choices === "Engineer"){
-            //     addEngineer();
-            // } else if(data.choices === "Intern") {
-            //     addIntern();
-            // } else {
-            //     console.log("Thank you!  All entries complete");
-            // }
-            ,
-            (err) =>
+            choices === "Engineer"
+            ? addEngineer()
+            : choices === "Intern"
+                ? addIntern()
+                : console.log("Thank you!  All entries complete"),
+                (err) =>
             err ? console.log(err) : console.log('Success!')
+            
         })
 }
 
