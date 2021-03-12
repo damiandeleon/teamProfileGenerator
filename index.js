@@ -1,15 +1,21 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
+const Engineer = require('./lib/Engineer');
+const Employee = require('./lib/Employee');
+const Intern = require('./lib/Intern');
+const Manager = require('./lib/Manager');
+
 // TODO: Create an array of questions for user input
 
 // add function to present manager questions
+const employeeArray = [];
 
-function addPersonelPrompt (){
+function addPersonelPrompt() {
     inquirer
         .prompt([
             {
-                type: 'checkbox',
+                type: 'list',
                 message: 'Which type of team member would you like to add?',
                 name: 'membertype',
                 choices: ["Engineer", "Intern", "I don't want to add any more team members"],
@@ -18,212 +24,148 @@ function addPersonelPrompt (){
 
         .then((data) => {
             const choices = data.membertype;
-            console.log(choices)
-            choices === "Engineer"
-            ? addEngineer()
-            : choices === "Intern"
-                ? addIntern()
-                : console.log("Thank you!  All entries complete"),
-                (err) =>
-            err ? console.log(err) : console.log('Success!')
-            
+            const filename = './teamProfile.html'
+            // console.log(choices)
+            // choices === "Engineer"
+            //     ? addEngineer()
+            //     : choices === "Intern"
+            //         ? addIntern()
+            //         : fs.writeFile(filename,employeeArray,(err) =>
+            // err ? console.log(err) : console.log('Success!'))
+
+            switch (choices) {
+                case 'Engineer':
+                    addEngineer();
+                    break;
+                case 'Intern':
+                    addIntern();
+                    break;
+                default:
+                    fs.writeFile(filename,employeeArray,(err) => err ? console.log(err) : console.log('Success!'));
+
+            } 
         })
 }
 
 function addManager() {
     inquirer
-    .prompt([
-        {
-            type: 'input',
-            name: 'managerName',
-            message: "What is the Manager's name?",
-        },
-        {
-            type: 'input',
-            name: 'managerID',
-            message: "What is the Manager's Employee ID?",
-        },
-        {
-            type: 'input',
-            name: 'managerEmail',
-            message: "What is the Manager's email address?",
-        },
-        {
-            type: 'input',
-            name: 'managerPhone',
-            message: "What is the Manager's phone number?",
-        },
-    ])
+        .prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: "What is the Manager's name?",
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: "What is the Manager's Employee ID?",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "What is the Manager's email address?",
+            },
+            {
+                type: 'input',
+                name: 'officeNumber',
+                message: "What is the Manager's phone number?",
+            },
+        ])
 
-    .then((data) => {
-        const filename = `teamProfile.html`;
-    
-        fs.writeFile(filename,
-        `
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<h1>${data.managerName}
-Manager</h1>
-${data.managerID}
-${data.managerEmail}
-${data.managerPhone}
-</body>
-</html>`,
-        
-
-        (err) =>
-        err ? console.log(err) : console.log('Success!')
-    )
-    addPersonelPrompt();
-})
+        .then((data) => {
+            const manager = new Manager(data.name, data.id, data.email, data.officeNumber)
+            employeeArray.push(manager);
+            // console.log(employeeArray);
+            addPersonelPrompt();
+        })
 }
 
-function addEngineer(){
-inquirer
-    .prompt([
-        // Enter Engineer's information ------------------------
-        {
-            type: 'input',
-            name: 'engineerName',
-            message: "What is the Engineer's name?",
-        },
-        {
-            type: 'input',
-            name: 'engineerID',
-            message: "What is the Engineer's Employee ID?",
-        },
-        {
-            type: 'input',
-            name: 'engineerEmail',
-            message: "What is the Engineer's email address?",
-        },
-        {
-            type: 'input',
-            name: 'engineerGitHub',
-            message: "What is the Engineer's GitHub username?",
-        },
-    ])
+function addEngineer() {
+    inquirer
+        .prompt([
+            // Enter Engineer's information ------------------------
+            {
+                type: 'input',
+                name: 'name',
+                message: "What is the Engineer's name?",
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: "What is the Engineer's Employee ID?",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "What is the Engineer's email address?",
+            },
+            {
+                type: 'input',
+                name: 'github',
+                message: "What is the Engineer's GitHub username?",
+            },
+        ])
 
-    .then((data) => {
-        const filename = `teamProfile.html`;
-    
-        fs.appendFile(filename,
-//put code in to add card to the html file in a specific div tag with a class in it 
-        `
-<h1>${data.engineerName}
-Engineer</h1>
-${data.engineerID}
-${data.engineerEmail}
-https://github.com/${data.engineerGitHub}
-</body>
-</html>`,
-        
-
-        (err) =>
-        err ? console.log(err) : console.log('Success!')
-    )
-addPersonelPrompt();
-})
+        .then((data) => {
+            const engineer = new Engineer(data.name, data.id, data.email, data.github)
+            employeeArray.push(engineer);
+            // console.log(employeeArray);
+            addPersonelPrompt();
+        })
 }
-// inquirer
-//     .prompt([
-//         {
-//             type: 'input',
-//             name: 'managerName',
-//             message: "What is the Manager's name?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'managerID',
-//             message: "What is the Manager's Employee ID?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'managerEmail',
-//             message: "What is the Manager's email address?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'managerPhone',
-//             message: "What is the Manager's phone number?",
-//         },
-//         {
-//             type: 'checkbox',
-//             message: 'Which type of team member would you like to add?',
-//             name: 'membertype',
-//             choices: ["Engineer", "Intern", "I don't want to add any more team members"],
-//         },
-//         // Enter Engineer's information ------------------------
-//         {
-//             type: 'input',
-//             name: 'engineerName',
-//             message: "What is the Engineer's name?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'engineerID',
-//             message: "What is the Engineer's Employee ID?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'engineerEmail',
-//             message: "What is the Engineer's email address?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'engineerPhone',
-//             message: "What is the Engineer's phone number?",
-//         },
 
-        
-//         // Enter Intern's information ------------------------
-//         {
-//             type: 'input',
-//             name: 'internName',
-//             message: "What is the Intern's name?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'internID',
-//             message: "What is the Intern's Employee ID?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'internEmail',
-//             message: "What is the Intern's email address?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'internPhone',
-//             message: "What is the Intern's phone number?",
-//         },
-//         {
-//             type: 'checkbox',
-//             message: 'Which type of team member would you like to add?',
-//             name: 'membertype',
-//             choices: ["Engineer', 'Intern', 'I don't want to add any more team members"],
-//         }
-//     ])
+function addIntern() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: "What is the Intern's name?",
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: "What is the Intern's Employee ID?",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "What is the Intern's email address?",
+            },
+            {
+                type: 'input',
+                name: 'school',
+                message: "What is the Intern's school?",
+            },
+        ])
 
-//     .then((data) => {
-//         const filename = `teamProfile.html`;
-    
-//         fs.writeFile(filename,
-//         `
-//         <!DOCTYPE html>
+        .then((data) => {
+            const intern = new Intern(data.name, data.id, data.email, data.school)
+            employeeArray.push(intern);
+            // console.log(employeeArray);
+            addPersonelPrompt();
+        })
+}
+
+
+//__________ code to start it off
+
+addManager();
+
+
+
+//---------code to write the file------------ 
+// const filename = `./teamProfile.html`;
+
+// fs.writeFile(filename,
+// `
+// <!DOCTYPE html>
 // <html lang="en">
 // <head>
-//     <meta charset="UTF-8">
-//     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Document</title>
+// <meta charset="UTF-8">
+// <meta http-equiv="X-UA-Compatible" content="IE=edge">
+// <meta name="viewport" content="width=device-width, initial-scale=1.0">
+// <title>Document</title>
 // </head>
 // <body>
 // <h1>${data.managerName}
@@ -233,19 +175,11 @@ addPersonelPrompt();
 // ${data.managerPhone}
 // </body>
 // </html>`,
-        
-
-//         (err) =>
-//         err ? console.log(err) : console.log('Success!')
-//     )
-// addPersonelPrompt();
-//})
 
 
+// (err) =>
+// err ? console.log(err) : console.log('Success!')
+// )
 
-//__________ code to start it off
 
-addManager();
-
- 
 
