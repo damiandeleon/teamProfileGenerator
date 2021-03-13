@@ -25,26 +25,25 @@ function addPersonelPrompt() {
         .then((data) => {
             const choices = data.membertype;
             const filename = './teamProfile.html'
-            // console.log(choices)
-            // choices === "Engineer"
-            //     ? addEngineer()
-            //     : choices === "Intern"
-            //         ? addIntern()
-            //         : fs.writeFile(filename,employeeArray,(err) =>
-            // err ? console.log(err) : console.log('Success!'))
+            console.log(choices)
+            choices === "Engineer"
+                ? addEngineer()
+                : choices === "Intern"
+                    ? addIntern()
+                    : writeFile();
 
-            switch (choices) {
-                case 'Engineer':
-                    addEngineer();
-                    break;
-                case 'Intern':
-                    addIntern();
-                    break;
-                default:
-                    fs.writeFile(filename,employeeArray,(err) => err ? console.log(err) : console.log('Success!'));
+            // switch (choices) 
+            //     case 'Engineer':
+            //         addEngineer();
+            //     case 'Intern':
+            //         addIntern();
+            //     case "I don't want to add any more team members": 
+                
+            //     default:
+            //         fs.writeFile(filename,employeeArray,(err) => err ? console.log(err) : console.log('Success!'));
 
-            } 
-        })
+            // } 
+        });
 }
 
 function addManager() {
@@ -155,31 +154,33 @@ addManager();
 
 
 //---------code to write the file------------ 
-// const filename = `./teamProfile.html`;
+function writeFile (data) {
+    console.log(employeeArray);
+const filename = `./teamProfile.html`;
 
-// fs.writeFile(filename,
-// `
-// <!DOCTYPE html>
-// <html lang="en">
-// <head>
-// <meta charset="UTF-8">
-// <meta http-equiv="X-UA-Compatible" content="IE=edge">
-// <meta name="viewport" content="width=device-width, initial-scale=1.0">
-// <title>Document</title>
-// </head>
-// <body>
-// <h1>${data.managerName}
-// Manager</h1>
-// ${data.managerID}
-// ${data.managerEmail}
-// ${data.managerPhone}
-// </body>
-// </html>`,
+fs.writeFile(filename,
+`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+<h1>
+My Team</h1>
+${JSON.stringify(employeeArray)}
+</body>
+</html>`,
 
 
-// (err) =>
-// err ? console.log(err) : console.log('Success!')
-// )
+(err) =>
+err ? console.log(err) : console.log('Success!')
+)
+}
+
 
 
 
