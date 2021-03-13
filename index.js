@@ -31,18 +31,6 @@ function addPersonelPrompt() {
                 : choices === "Intern"
                     ? addIntern()
                     : writeFile();
-
-            // switch (choices) 
-            //     case 'Engineer':
-            //         addEngineer();
-            //     case 'Intern':
-            //         addIntern();
-            //     case "I don't want to add any more team members": 
-                
-            //     default:
-            //         fs.writeFile(filename,employeeArray,(err) => err ? console.log(err) : console.log('Success!'));
-
-            // } 
         });
 }
 
@@ -154,8 +142,7 @@ addManager();
 
 
 //---------code to write the file------------ 
-function writeFile (data) {
-    console.log(employeeArray);
+function writeFile () {
 const filename = `./teamProfile.html`;
 
 fs.writeFile(filename,
@@ -178,6 +165,8 @@ ${JSON.stringify(employeeArray)}
 
 (err) =>
 err ? console.log(err) : console.log('Success!')
+
+
 )
 }
 
